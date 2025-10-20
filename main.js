@@ -116,7 +116,13 @@ function Flower(x, y, h, petalDur) {
     var delayMult = 0.08;
     this.bloomDur = (random + (this.layers-1)*delayMult) + petalDur;
     this.canChange = false;
-    setTimeout(() => {this.canChange = true}, this.bloomDur*1000);
+    setTimeout(() => {
+        this.canChange = true;
+        // Hiện message khi hoa nở xong lần đầu
+        if(messageContainer) {
+            messageContainer.style.opacity = '1';
+        }
+    }, this.bloomDur*1000);
     this.ready = false;
     this.rad = Math.min(can.width, can.height)/12;
     var innerRad = this.rad/3;
@@ -146,15 +152,25 @@ function Flower(x, y, h, petalDur) {
             this.canChange = false;
             st = Date.now();
             createHearts(x, y);
+
+            // Ẩn message khi hoa khép lại
+            if(messageContainer) {
+                messageContainer.style.opacity = '0';
+            }
         }
-        
+
         if((Date.now() - st)/1000 > this.bloomDur && !this.canChange) {
             this.ready = true;
         }
-        
+
         if(distSqrd(x, y, m.x, m.y) > (this.rad + 10)**2 && this.ready) {
             this.ready = false;
             this.canChange = true;
+
+            // Hiện message khi hoa nở lại
+            if(messageContainer) {
+                messageContainer.style.opacity = '1';
+            }
         }
     };
     
@@ -187,9 +203,11 @@ function createHearts(x, y) {
 }
 
 var tulip;
+var messageContainer;
 
 function setup() {
     tulip = new Flower(can.width/2, can.height/2, 340, 1);
+    messageContainer = document.querySelector('.message-container');
 }
 
 function anim() {
