@@ -116,13 +116,7 @@ function Flower(x, y, h, petalDur) {
     var delayMult = 0.08;
     this.bloomDur = (random + (this.layers-1)*delayMult) + petalDur;
     this.canChange = false;
-    setTimeout(() => {
-        this.canChange = true;
-        // Hiện message khi hoa nở xong lần đầu
-        if(messageContainer) {
-            messageContainer.style.opacity = '1';
-        }
-    }, this.bloomDur*1000);
+    setTimeout(() => {this.canChange = true}, this.bloomDur*1000);
     this.ready = false;
     this.rad = Math.min(can.width, can.height)/12;
     var innerRad = this.rad/3;
@@ -225,4 +219,4 @@ function anim() {
 window.onload = function() {
     setup();
     anim();
-};
+}; 
